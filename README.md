@@ -39,4 +39,4 @@ This project is designed to enable users to experience the working principles of
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/ann-simulation-python-editor.git
+   git clone https://github.com/rumeysacelik/neural_network_interface.git
