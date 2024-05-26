@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Öğrenme Arayüzü</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> <!-- W3.CSS kullanıldı -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto 0 auto; /* Üst boşluğu azaltmak için 20px olarak ayarlandı */
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .input-field {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            min-height: 50px; /* Output alanını daha belirgin kılmak için */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .w3-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container w3-card">
+        <h2>Python Öğrenme Arayüzü</h2>
+        <label for="pythonCode">Python Kodu:</label>
+        <textarea id="pythonCode" class="input-field" rows="5" cols="50"></textarea>
+        <br>
+        <button id="runButton">Kodu Çalıştır</button>
+        <pre id="output"></pre>
+        <div id="taskDescription" class="w3-container w3-light-grey w3-padding">
+            <p id="currentTask">Lütfen Python dilinde 'Hello, World!' yazdırın.</p>
+        </div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
+    <script src="js/skulpt.min.js" type="text/javascript"></script>
+    <script src="js/skulpt-stdlib.js" type="text/javascript"></script>
+
+    <script>
+        const tasks = [
+            "Hello, World!",
+            "1\n2\n3",
+            "1\n2\n3"
+        ];
+        let currentTask = 0;
+    
+        document.getElementById("runButton").addEventListener("click", function() {
+            runSkulpt();
+        });
+    
+        function outf(text) { 
+            var mypre = document.getElementById("output");
+            mypre.innerHTML += text; // Append text to the output
+        }
+    
+        function checkTask() {
+            const output = document.getElementById("output").textContent.trim();
+            const normalizedOutput = output.replace(/\s+/g, ' ').trim();
+            const expectedOutput = tasks[currentTask].replace(/\s+/g, ' ').trim();
+    
+            if (normalizedOutput === expectedOutput) {
+                currentTask++;
+                if (currentTask < tasks.length) {
+                    document.getElementById("pythonCode").value = "";
+                    document.getElementById("currentTask").innerHTML = getNextTaskMessage();
+                    document.getElementById("output").textContent = ""; // Clear the output for the next task
+                } else {
+                    document.getElementById("currentTask").innerHTML = "Tebrikler! Tüm görevleri başarıyla tamamladınız.";
+                    document.getElementById("runButton").disabled = true;
+                }
+            } else {
+                document.getElementById("currentTask").innerHTML = "Lütfen tekrar deneyin.";
+            }
+        }
+    
+        function getNextTaskMessage() {
+            switch(currentTask) {
+                case 1:
+                    return "Harika! Şimdi bir for döngüsü kullanarak 1'den 3'e kadar sayıları yazdırın.";
+                case 2:
+                    return "Mükemmel! Şimdi bu işlemi bir fonksiyon içinde yapın ve fonksiyonu çağırın.";
+                default:
+                    return "";
+            }
+        }
+    
+        function runSkulpt() {
+            var program = document.getElementById("pythonCode").value;
+            document.getElementById("output").textContent = ''; // Clear previous output
+            Sk.configure({
+                output: outf,
+                read: builtinRead
+            });
+            Sk.misceval.asyncToPromise(function() {
+                return Sk.importMainWithBody("<stdin>", false, program, true);
+            }).then(function(mod) {
+                checkTask(); // Check the task after the script runs
+            }, function(err) {
+                document.getElementById("output").textContent = err.toString();
+            });
+        }
+    
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+    </script>
+    
+</body>
+</html>

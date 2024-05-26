@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.article-card {
+    background-color: #ffe4e1; /* Pembe arka plan */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.article-card h1 {
+    color: #d147a3; /* Daha koyu pembe yazı rengi */
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.article-card h2 {
+    color: #d147a3; /* Daha koyu pembe yazı rengi */
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.article-card p {
+    color: #555; /* Daha açık gri yazı rengi */
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
